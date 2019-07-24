@@ -6,15 +6,14 @@
     hide-actions
   >
     <template v-slot:items="props">
-      <td class="text-xs-right">{{ props.item.hourMor }}</td>
-      <td>{{ props.item.Today }}</td>
+      <td>{{ props.item.today }}</td>
       <td class="text-xs-right"> 
-        <v-btn color="info" :id="desserts" v-if="props.item.leftSpaceMor>0 && !props.item.alreadyOrderMor" @click="selMor(props.item.id)">{{ props.item.leftSpaceMor }}/{{ props.item.spaceMor }}</v-btn>
+        <v-btn color="info" :id="desserts" v-if="props.item.leftSpaceMor>0 && !props.item.alreadyOrderMor" @click="selMor(props.item.id,props.item.today)">{{ props.item.leftSpaceMor }}/{{ props.item.spaceMor }}</v-btn>
         {{ props.item.userNameMor }}
         <v-btn :id="desserts" v-if="props.item.alreadyOrderMor" @click="cancelMor(props.item.id)" color="success">取消预订</v-btn>
       </td>
       <td class="text-xs-right"> 
-        <v-btn color="info" :id="desserts" v-if="props.item.leftSpaceAft>0 && !props.item.alreadyOrderAft" @click="selAft(props.item.id)">{{ props.item.leftSpaceAft }}/{{ props.item.spaceAft }}</v-btn>
+        <v-btn color="info" :id="desserts" v-if="props.item.leftSpaceAft>0 && !props.item.alreadyOrderAft" @click="selAft(props.item.id,props.item.today)">{{ props.item.leftSpaceAft }}/{{ props.item.spaceAft }}</v-btn>
         {{ props.item.userNameAft }}
         <v-btn :id="desserts" v-if="props.item.alreadyOrderAft" @click="cancelAft(props.item.id)" color="success">取消预订</v-btn>
         </td>
@@ -42,7 +41,6 @@ export default Vue.extend({
             value: 'name',
             rowsPerPage:-1,
           },
-            { text: '时长', value: 'fat',sortable: false,}
           // { text: '12:00:00', value: 'calories',sortable: false,},
           // { text: '18:00:00', value: 'fat',sortable: false,},
         ],
@@ -91,7 +89,8 @@ export default Vue.extend({
           })
     },
     methods:{
-      selMor(e){
+      selMor(e,t){
+        console.log(this.getDate());
         alert(e);
         // console.log("selMor");
         var that = this;
@@ -101,7 +100,7 @@ export default Vue.extend({
                   params:{
                               username: Cookies.get('username'),
                               id: e,
-                              today:this.getDate()
+                              today:t
                           }
           }).then(function(resp){
                   that.$nextTick(function () {
@@ -116,7 +115,7 @@ export default Vue.extend({
                   })
           }) 
       },
-      selAft(e){
+      selAft(e,t){
         alert(e);
         // console.log("selMor");
         var that = this;
@@ -126,7 +125,7 @@ export default Vue.extend({
                   params:{
                               username: Cookies.get('username'),
                               id: e,
-                              today:this.getDate()
+                              today:t
                           }
           }).then(function(resp){
                   that.$nextTick(function () {

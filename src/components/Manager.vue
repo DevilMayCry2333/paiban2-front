@@ -22,6 +22,9 @@
     <v-btn @click="SubmitAft" color="success">提交</v-btn>
     <v-btn @click="showClass" color="success">查看班次</v-btn>
 
+    <v-btn href="https://youkaiyu.com:5000/delPhase" color="red">清除上一周班次</v-btn>
+    <v-btn href="https://youkaiyu.com:5000/delClass" color="red">清除上一周选班</v-btn>
+
   </div>
 
 </template>
