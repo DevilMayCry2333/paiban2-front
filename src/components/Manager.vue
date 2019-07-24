@@ -6,7 +6,7 @@
             <v-text-field
         v-model="hourMor"
         :counter="10"
-        label="Name"
+        label="时长"
         required
         ></v-text-field>
     <v-btn @click="SubmitMor" v-if="MorClick" color="success">提交</v-btn>
@@ -15,7 +15,7 @@
             <v-text-field
         v-model="hourAft"
         :counter="10"
-        label="Name"
+        label="时长"
         required
         ></v-text-field>
     <p>时长</p>
@@ -53,8 +53,8 @@ export default Vue.extend({
     methods:{
         SubmitMor(){
             this.MorClick = false;
-            console.log(this.hourMor);
-            console.log(this.pickerMor);
+            // console.log(this.hourMor);
+            // console.log(this.pickerMor);
           axios({
                   method:'post',
                   url:config.url+ "insertPhase",
@@ -66,13 +66,13 @@ export default Vue.extend({
               if(!resp.data.Res.match("true")){
                   alert("提交失败，请联系管理员");
               }
-              console.log(resp);
+            //   console.log(resp);
           }) 
 
         },
         SubmitAft(){
-            console.log(this.hourAft);
-            console.log(this.pickerAft);
+            // console.log(this.hourAft);
+            // console.log(this.pickerAft);
             var that = this;
             if(this.MorClick){
                 alert("请先提交早上的阶段");
@@ -91,7 +91,7 @@ export default Vue.extend({
                         //开始跳转了
                         that.$router.push("/GenClass");
                     }
-                    console.log(resp);
+                    // console.log(resp);
                 }) 
 
             }

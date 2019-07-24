@@ -17,6 +17,7 @@
       :rules="passRules"
       label="密码"
       required
+      type="password"
     ></v-text-field>
     <div>
     <v-btn color="primary" @click="test">提交</v-btn>
@@ -57,7 +58,7 @@ export default Vue.extend({
     }),
     methods:{
        test:function(){
-           console.log(config.url);
+          //  console.log(config.url);
            var that = this;
            if(this.username && this.password){
                 axios({
@@ -68,15 +69,19 @@ export default Vue.extend({
                               password: this.password
                           }
                       }).then(function(resp){
-                          console.log(resp.data);
-                          if(resp.data.Res){
+                          // console.log(resp.data);
+                          if(resp.data.Res == "lock"){
+                            alert("账户已锁定");
+                          }
+                          else if(resp.data.Res){
                                  alert("认证已通过，准备跳转");
                                  Cookies.set('token',resp.data.Token);
                                  Cookies.set('username',that.username);
                                  var v = Cookies.get('token');
                                  alert(v);
                                  that.$router.push("/");
-                          }else{
+                          }
+                          else{
                               alert("用户名或者密码错误");
                           }
                        

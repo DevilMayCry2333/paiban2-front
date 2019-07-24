@@ -8,8 +8,16 @@
     <template v-slot:items="props">
       <td class="text-xs-right">{{ props.item.hourMor }}</td>
       <td>{{ props.item.Today }}</td>
-      <td class="text-xs-right"> <v-btn color="info" :id="desserts" v-if="props.item.leftSpaceMor>0 && !props.item.alreadyOrderMor" @click="selMor(props.item.id)">{{ props.item.leftSpaceMor }}/{{ props.item.spaceMor }}</v-btn>{{ props.item.userNameMor }}</td>
-      <td class="text-xs-right"> <v-btn color="info" :id="desserts" v-if="props.item.leftSpaceAft>0 && !props.item.alreadyOrderAft" @click="selAft(props.item.id)">{{ props.item.leftSpaceAft }}/{{ props.item.spaceAft }}</v-btn>{{ props.item.userNameAft }}</td>
+      <td class="text-xs-right"> 
+        <v-btn color="info" :id="desserts" v-if="props.item.leftSpaceMor>0 && !props.item.alreadyOrderMor" @click="selMor(props.item.id)">{{ props.item.leftSpaceMor }}/{{ props.item.spaceMor }}</v-btn>
+        {{ props.item.userNameMor }}
+        <v-btn :id="desserts" v-if="props.item.alreadyOrderMor" @click="cancelMor(props.item.id)" color="success">取消预订</v-btn>
+      </td>
+      <td class="text-xs-right"> 
+        <v-btn color="info" :id="desserts" v-if="props.item.leftSpaceAft>0 && !props.item.alreadyOrderAft" @click="selAft(props.item.id)">{{ props.item.leftSpaceAft }}/{{ props.item.spaceAft }}</v-btn>
+        {{ props.item.userNameAft }}
+        <v-btn :id="desserts" v-if="props.item.alreadyOrderAft" @click="cancelAft(props.item.id)" color="success">取消预订</v-btn>
+        </td>
     </template>
   </v-data-table>
 </template>
@@ -53,7 +61,7 @@ export default Vue.extend({
             alert("您还未登录，请登录");
             this.$router.push("/login");
           }
-          console.log("Create");
+          // console.log("Create");
           axios({
                   method:'post',
                   url:config.url+ "queryClass",
@@ -62,9 +70,9 @@ export default Vue.extend({
                   }
           }).then(function(resp){
                   that.$nextTick(function () {
-                  console.log(resp.data);
+                  // console.log(resp.data);
                   this.desserts = resp.data;
-                  console.log(this.desserts);
+                  // console.log(this.desserts);
                   })
           })
 
@@ -73,19 +81,19 @@ export default Vue.extend({
                   url:config.url+ "queryPhase",
           }).then(function(resp){
                   that.$nextTick(function () {
-                  console.log(resp.data);
+                  // console.log(resp.data);
                   for(var i = 0 ; i < resp.data.length; i++){
                           this.headers.push(resp.data[i]);
                   }
-                  console.log("完成");
-                  console.log(this.headers);
+                  // console.log("完成");
+                  // console.log(this.headers);
                   })
           })
     },
     methods:{
       selMor(e){
         alert(e);
-        console.log("selMor");
+        // console.log("selMor");
         var that = this;
           axios({
                   method:'post',
@@ -97,20 +105,20 @@ export default Vue.extend({
                           }
           }).then(function(resp){
                   that.$nextTick(function () {
-                  console.log(resp.data);
+                  // console.log(resp.data);
                   for(var i = 0 ; i < resp.data.length; i++){
                           this.desserts.push(resp.data[i]);
                   }
 
-                  console.log("完成");
-                  console.log(this.desserts);
+                  // console.log("完成");
+                  // console.log(this.desserts);
                   location.reload();
                   })
           }) 
       },
       selAft(e){
         alert(e);
-        console.log("selMor");
+        // console.log("selMor");
         var that = this;
           axios({
                   method:'post',
@@ -122,13 +130,13 @@ export default Vue.extend({
                           }
           }).then(function(resp){
                   that.$nextTick(function () {
-                  console.log(resp.data);
+                  // console.log(resp.data);
                   for(var i = 0 ; i < resp.data.length; i++){
                           this.desserts.push(resp.data[i]);
                   }
 
-                  console.log("完成");
-                  console.log(this.desserts);
+                  // console.log("完成");
+                  // console.log(this.desserts);
                   location.reload();
                   })
           }) 
@@ -147,6 +155,58 @@ export default Vue.extend({
         }
         var currentdate = year + seperator1 + month + seperator1 + strDate;
         return currentdate;
+      },
+      cancelMor(e){
+        alert(e);
+        // console.log(e);
+        // console.log("cancelMor");
+        var that = this;
+          axios({
+                  method:'post',
+                  url:config.url+ "cancelMorClass",
+                  params:{
+                              username: Cookies.get('username'),
+                              id: e,
+                              today:this.getDate()
+                          }
+          }).then(function(resp){
+                  that.$nextTick(function () {
+                  // console.log(resp.data);
+                  for(var i = 0 ; i < resp.data.length; i++){
+                          this.desserts.push(resp.data[i]);
+                  }
+
+                  // console.log("完成");
+                  // console.log(this.desserts);
+                  location.reload();
+                  })
+          }) 
+      },
+      cancelAft(e){
+        alert(e);
+        // console.log("cancelMor");
+        var that = this;
+          axios({
+                  method:'post',
+                  url:config.url+ "cancelAftClass",
+                  params:{
+                              username: Cookies.get('username'),
+                              id: e,
+                              today:this.getDate()
+                          }
+          }).then(function(resp){
+                  that.$nextTick(function () {
+                  // console.log(resp.data);
+                  for(var i = 0 ; i < resp.data.length; i++){
+                          this.desserts.push(resp.data[i]);
+                  }
+
+                  // console.log("完成");
+                  // console.log(this.desserts);
+                  location.reload();
+                  })
+          }) 
+
       }
     }
 })

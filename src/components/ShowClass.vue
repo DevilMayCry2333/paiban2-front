@@ -65,9 +65,9 @@ export default Vue.extend({
                   }
           }).then(function(resp){
                   that.$nextTick(function () {
-                  console.log(resp.data);
+                  // console.log(resp.data);
                   this.desserts = resp.data;
-                  console.log(this.desserts);
+                  // console.log(this.desserts);
                   })
           })
     }
